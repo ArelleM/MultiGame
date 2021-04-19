@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.example.multi_game.R;
 import com.example.multi_game.dao.AppDatabase;
 import com.example.multi_game.databinding.ActivityCreatePlayerBinding;
+import com.example.multi_game.manager.PlayerManager;
 import com.example.multi_game.model.Player;
+import com.example.multi_game.utils.ActivityUtils;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
@@ -74,10 +76,19 @@ public class CreatePlayerActivity extends AppCompatActivity {
                             pictureUrl);
 
                     AppDatabase.getDatabase(getApplicationContext()).appDao().insert(player);
+                    PlayerManager.getInstance().setPlayer(player);
+                    ActivityUtils.launchActivity(CreatePlayerActivity.this, MainActivity.class, true, true);
                 }else{
                     Toast.makeText(CreatePlayerActivity.this,"Informations manquantes",Toast.LENGTH_LONG).show();
                 }
                 //Player player = new Player("nom","prenom",Integer.parseInt(binding.createPlayerAge.getText().toString()),"loc","picture");
+            }
+        });
+
+        binding.createPlayerPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.launchActivity(CreatePlayerActivity.this, DisplayPlayerActivity.class,false, true);
             }
         });
 
